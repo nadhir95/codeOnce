@@ -15,6 +15,8 @@ import com.codeOnce.technicalTest.exception.InvalidInputException;
 import com.codeOnce.technicalTest.model.dto.ProductDTO;
 import com.codeOnce.technicalTest.model.entity.ProductEntity;
 import com.codeOnce.technicalTest.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,13 +39,17 @@ public class ProductController {
         @ApiResponse(responseCode = ErrorConstant.STATUS_503, description = "Service Unavailable", content = @Content)
     }) 
     public ResponseEntity<?> getAvailableProductsByCategory(@RequestParam String categoryName) {
+
         try {
             List<ProductDTO> products = productService.getAvailableProductsByCategory(categoryName);
      
                 return ResponseEntity.ok(products);
             
         } catch (InvalidInputException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
+        	 ObjectMapper mapper = new ObjectMapper();
+             ObjectNode messageJson = mapper.createObjectNode();            
+             messageJson.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(messageJson);
         }
     }
         
