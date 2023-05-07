@@ -27,10 +27,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @GetMapping
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = ErrorConstant.STATUS_200, description = " Last request history line returned successfully", content = {
+    @ApiResponses(value = {
+			@ApiResponse(responseCode = ErrorConstant.STATUS_200, description = " product list returned successfully", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProductEntity.class)) }),
-			@ApiResponse(responseCode = ErrorConstant.STATUS_400, description = "Invalid Request added", content = @Content),
 			@ApiResponse(responseCode = ErrorConstant.STATUS_500, description = "Internal Server Error", content = @Content),
 			@ApiResponse(responseCode = ErrorConstant.STATUS_503, description = "Service Unavailable", content = @Content) })
     public List<ProductDTO> getAvailableProductsByCategory(@RequestParam String categoryName) throws InvalidInputException {
