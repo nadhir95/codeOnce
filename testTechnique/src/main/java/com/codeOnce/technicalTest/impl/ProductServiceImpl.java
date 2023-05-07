@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
 				throw new InvalidInputException("La catégorie " + categoryName + " n'existe pas");
 			}
 
-			List<ProductEntity> products = productRepository.findByCategoryNameAndStockGreaterThan(categoryName, 0);
+			List<ProductEntity> products = productRepository.findByCategoryNameIgnoreCaseAndStockGreaterThan(categoryName, 0);
 			if (products.isEmpty()) {
 				throw new InvalidInputException(
 						"Il n'y a pas de produits disponibles dans la catégorie " + categoryName);

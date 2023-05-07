@@ -54,7 +54,7 @@ public class ProductServiceTest {
 		list.add(milk);
 		
 		Mockito.when(categoryRepository.findByNameIgnoreCase(categoryName)).thenReturn(foodCategoryEntityOptional);
-		Mockito.when(productRepository.findByCategoryNameAndStockGreaterThan(categoryName,0)).thenReturn(listEntities);
+		Mockito.when(productRepository.findByCategoryNameIgnoreCaseAndStockGreaterThan(categoryName,0)).thenReturn(listEntities);
 		Mockito.when(ProductMapper.toDtoList(listEntities)).thenReturn(list);
 		List<ProductDTO> productList = productService.getAvailableProductsByCategory("Alimentation");
 
@@ -83,7 +83,7 @@ public class ProductServiceTest {
         CategoryEntity category = new CategoryEntity(1L, categoryName);
 
         Mockito.when(categoryRepository.findByNameIgnoreCase(categoryName)).thenReturn(Optional.of(category));
-        Mockito.when(productRepository.findByCategoryNameAndStockGreaterThan(categoryName, 0)).thenReturn(Arrays.asList());
+        Mockito.when(productRepository.findByCategoryNameIgnoreCaseAndStockGreaterThan(categoryName, 0)).thenReturn(Arrays.asList());
 
 
         Assertions.assertThrows(InvalidInputException.class, () -> {
