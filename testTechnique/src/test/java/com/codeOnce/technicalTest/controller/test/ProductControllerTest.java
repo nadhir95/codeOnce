@@ -25,6 +25,8 @@ import com.codeOnce.technicalTest.controller.ProductController;
 import com.codeOnce.technicalTest.exception.InvalidInputException;
 import com.codeOnce.technicalTest.mapper.ProductMapper;
 import com.codeOnce.technicalTest.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.codeOnce.technicalTest.model.dto.ProductDTO;
 
 @WebMvcTest(controllers = ProductController.class)
@@ -35,40 +37,39 @@ public class ProductControllerTest {
 	private MockMvc mockMvc;
 	@Autowired
 	private ProductController productController;
-	
+
 	@MockBean
 	private ProductService productService;
 
 	@MockBean
 	ProductMapper productMapper;
+
 	@DisplayName(" get available products ")
 	@Test
 	void shouldGetAvailableProductsByCategory() throws Exception {
-      String categoryName = "testCategory";
-      List<ProductDTO> expectedProducts = Arrays.asList(new ProductDTO(), new ProductDTO());
-      when(productService.getAvailableProductsByCategory(categoryName)).thenReturn(expectedProducts);
-		
-		
-		
-		mockMvc.perform(
-				get("/" + TestConstant.ACCESS + TestConstant.PRODUCT).param("categoryName", categoryName)
-						.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(MockMvcResultMatchers.status().isOk());
-		
+		String categoryName = "testCategory";
+		List<ProductDTO> expectedProducts = Arrays.asList(new ProductDTO(), new ProductDTO());
+		when(productService.getAvailableProductsByCategory(categoryName)).thenReturn(expectedProducts);
+
+		mockMvc.perform(get("/" + TestConstant.ACCESS + TestConstant.PRODUCT).param("categoryName", categoryName)
+				.contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk());
+
 	}
-	
-	
-    @Test
-    void testGetAvailableProductsByCategoryWithInvalidInputException() throws InvalidInputException {
-     
-        String categoryName = "test";
-        String errorMessage = "Invalid input";
-        when(productService.getAvailableProductsByCategory(categoryName)).thenThrow(new InvalidInputException(errorMessage));
-        ResponseEntity<?> responseEntity = productController.getAvailableProductsByCategory(categoryName);
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertNotNull(responseEntity.getBody());
-        assertEquals(errorMessage, responseEntity.getBody());
-    }
+
+	@Test
+	void testGetAvailableProductsByCategoryWithInvalidInputException() throws InvalidInputException {
+
+		String categoryName = "test";
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode messageJson = mapper.createObjectNode();
+		messageJson.put("message", "Invalid input");
+		String errorMessage = "Invalid input";
+		when(productService.getAvailableProductsByCategory(categoryName))
+				.thenThrow(new InvalidInputException(errorMessage));
+		ResponseEntity<?> responseEntity = productController.getAvailableProductsByCategory(categoryName);
+		assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+		assertNotNull(responseEntity.getBody());
+		assertEquals(messageJson, responseEntity.getBody());
+	}
 
 }
-
