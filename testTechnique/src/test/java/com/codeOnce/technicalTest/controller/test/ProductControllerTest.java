@@ -34,9 +34,9 @@ public class ProductControllerTest {
 
 	@MockBean
 	ProductMapper productMapper;
-	@DisplayName("GET all request status ")
+	@DisplayName(" get available products ")
 	@Test
-	void getAllRequestStatus() throws Exception {
+	void shouldGetAvailableProductsByCategory() throws Exception {
       String categoryName = "testCategory";
       List<ProductDTO> expectedProducts = Arrays.asList(new ProductDTO(), new ProductDTO());
       when(productService.getAvailableProductsByCategory(categoryName)).thenReturn(expectedProducts);

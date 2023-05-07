@@ -3,6 +3,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,12 +29,22 @@ public class ProductController {
     private ProductService productService;
     @GetMapping
     @ApiResponses(value = {
-			@ApiResponse(responseCode = ErrorConstant.STATUS_200, description = " product list returned successfully", content = {
-					@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProductEntity.class)) }),
-			@ApiResponse(responseCode = ErrorConstant.STATUS_500, description = "Internal Server Error", content = @Content),
-			@ApiResponse(responseCode = ErrorConstant.STATUS_503, description = "Service Unavailable", content = @Content) })
-    public List<ProductDTO> getAvailableProductsByCategory(@RequestParam String categoryName) throws InvalidInputException {
-        return productService.getAvailableProductsByCategory(categoryName);
+        @ApiResponse(responseCode = ErrorConstant.STATUS_200, description = "product list returned successfully", content = {
+                @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProductEntity.class))
+        }),
+        @ApiResponse(responseCode = ErrorConstant.STATUS_400, description = "No product found or invalid input", content = @Content),
+        @ApiResponse(responseCode = ErrorConstant.STATUS_500, description = "Internal Server Error", content = @Content),
+        @ApiResponse(responseCode = ErrorConstant.STATUS_503, description = "Service Unavailable", content = @Content)
+    }) 
+    public ResponseEntity<?> getAvailableProductsByCategory(@RequestParam String categoryName) {
+        try {
+            List<ProductDTO> products = productService.getAvailableProductsByCategory(categoryName);
+     
+                return ResponseEntity.ok(products);
+            
+        } catch (InvalidInputException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
         
 }
