@@ -17,12 +17,12 @@ public class ProductMapper {
         this.modelMapper = new ModelMapper();
     }
 
-    public ProductDTO toDto(ProductEntity entity) {
-        return modelMapper.map(entity, ProductDTO.class);
+    public ProductDTO toDto(ProductEntity productEntity) {
+        return modelMapper.map(productEntity, ProductDTO.class);
     }
 
-    public List<ProductDTO> toDtoList(List<ProductEntity> entityList) {
-        return entityList.stream()
+    public List<ProductDTO> toDtoList(List<ProductEntity> productList) {
+        return productList.stream()
                 .map(entity -> toDto(entity))
                 .collect(Collectors.toList());
     }

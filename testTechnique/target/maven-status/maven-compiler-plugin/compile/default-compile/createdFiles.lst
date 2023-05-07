@@ -1,0 +1,14 @@
+com\codeOnce\technicalTest\model\dto\CategoryDTO.class
+com\codeOnce\technicalTest\model\entity\ProductEntity.class
+com\codeOnce\technicalTest\controller\ProductController.class
+com\codeOnce\technicalTest\constant\ErrorConstant.class
+com\codeOnce\technicalTest\constant\TestConstant.class
+com\codeOnce\technicalTest\repository\CategoryRepository.class
+com\codeOnce\technicalTest\mapper\ProductMapper.class
+com\codeOnce\technicalTest\model\entity\CategoryEntity.class
+com\codeOnce\technicalTest\TestTechniqueApplication.class
+com\codeOnce\technicalTest\repository\ProductRepository.class
+com\codeOnce\technicalTest\service\ProductService.class
+com\codeOnce\technicalTest\exception\InvalidInputException.class
+com\codeOnce\technicalTest\impl\ProductServiceImpl.class
+com\codeOnce\technicalTest\model\dto\ProductDTO.class
